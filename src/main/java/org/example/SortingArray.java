@@ -1,9 +1,6 @@
 package org.example;
 
-import org.example.algorithms.BubbleSort;
-import org.example.algorithms.CocktailSort;
-import org.example.algorithms.GnomeSort;
-import org.example.algorithms.SelectionSort;
+import org.example.algorithms.*;
 
 import java.util.Random;
 import javax.swing.*;
@@ -12,23 +9,26 @@ import java.awt.event.*;
 
 public class SortingArray extends JPanel implements ActionListener {
     private final int[] array = new int[100];
-    private int arrayChanges = 0;
     private boolean stop = false;
     private final Random random = new Random();
     boolean bubbleBoolean = false;
     boolean cocktailBoolean = false;
     boolean gnomeBoolean = false;
     boolean selectionBoolean = false;
+    boolean pancakeBoolean = false;
     BubbleSort bubbleSort = new BubbleSort();
     CocktailSort cocktailSort = new CocktailSort();
     GnomeSort gnomeSort = new GnomeSort();
     SelectionSort selectionSort = new SelectionSort();
+    PancakeSort pancakeSort =new PancakeSort();
+
     JLabel label = new JLabel("0 swaps made  ");
     JButton RESTART = new JButton("restart array");
     JButton BUBBLE = new JButton("bubble sort");
     JButton COCKTAIL = new JButton("cocktail sort");
     JButton GNOME = new JButton("gnome sort");
     JButton SELECTION = new JButton("selection sort");
+    JButton PANCAKE = new JButton("pancake sort");
 
     public SortingArray(){
         randomizeArrayPosition();
@@ -39,6 +39,7 @@ public class SortingArray extends JPanel implements ActionListener {
         createButton(COCKTAIL, "cocktail");
         createButton(GNOME, "gnome");
         createButton(SELECTION, "selection");
+        createButton(PANCAKE, "pancake");
 
     }
 
@@ -86,6 +87,28 @@ public class SortingArray extends JPanel implements ActionListener {
                 }
 
             }
+            if (pancakeBoolean) {
+                if (!pancakeSort.flip){
+                    if (i == getMax(array.length - pancakeSort.portionSorted)) {
+                        g.setColor(Color.MAGENTA);
+                    }
+                    if (i==0){
+                        g.setColor(Color.YELLOW);
+                    }
+                }
+                else {
+                    if (i==0){
+                        g.setColor(Color.MAGENTA);
+                    }
+                    if (i==pancakeSort.currMax+1) {
+                        g.setColor(Color.YELLOW);
+                    }
+
+                }
+                if (i >= array.length - pancakeSort.portionSorted) {
+                    g.setColor(Color.green);
+                }
+            }
             g.drawRect(i*(14), 700-array[i], 14, array[i]);
             g.fillRect(i*(14), 700-array[i], 14, array[i]);
         }
@@ -106,6 +129,8 @@ public class SortingArray extends JPanel implements ActionListener {
                 gnomeBoolean = false;
                 selectionSort.reset();
                 selectionBoolean = false;
+                pancakeSort.reset();
+                pancakeBoolean = false;
                 stop = true;
                 randomizeArrayPosition();
                 repaint();
@@ -122,6 +147,8 @@ public class SortingArray extends JPanel implements ActionListener {
             case "selection":
                 startSorting("selection");
                 break;
+            case "pancake":
+                startSorting("pancake");
 
         }
 
@@ -150,6 +177,9 @@ public class SortingArray extends JPanel implements ActionListener {
                         selectionBoolean = true;
                         selectionSort.sort(array);
                         break;
+                    case "pancake":
+                        pancakeBoolean = true;
+                        pancakeSort.sort(array);
 
                 }
                 label.setText(BubbleSort.swaps + " swaps made  ");
@@ -179,6 +209,18 @@ public class SortingArray extends JPanel implements ActionListener {
             }
         }
         return true;
+    }
+
+    public int getMax(int n){
+        int index = 0;
+        int max = this.array[0];
+        for (int i=0; i < n; i++){
+            if (this.array[i] > max){
+                max = this.array[i];
+                index = i;
+            }
+        }
+        return index;
     }
 
 
