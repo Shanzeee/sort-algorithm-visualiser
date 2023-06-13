@@ -3,6 +3,7 @@ package org.example;
 import org.example.algorithms.BubbleSort;
 import org.example.algorithms.CocktailSort;
 import org.example.algorithms.GnomeSort;
+import org.example.algorithms.SelectionSort;
 
 import java.util.Random;
 import javax.swing.*;
@@ -14,17 +15,20 @@ public class SortingArray extends JPanel implements ActionListener {
     private int arrayChanges = 0;
     private boolean stop = false;
     private final Random random = new Random();
-    boolean bubble_boolean = false;
-    boolean cocktail_boolean = false;
-    boolean gnome_boolean = false;
+    boolean bubbleBoolean = false;
+    boolean cocktailBoolean = false;
+    boolean gnomeBoolean = false;
+    boolean selectionBoolean = false;
     BubbleSort bubbleSort = new BubbleSort();
     CocktailSort cocktailSort = new CocktailSort();
     GnomeSort gnomeSort = new GnomeSort();
+    SelectionSort selectionSort = new SelectionSort();
     JLabel label = new JLabel("0 swaps made  ");
     JButton RESTART = new JButton("restart array");
     JButton BUBBLE = new JButton("bubble sort");
     JButton COCKTAIL = new JButton("cocktail sort");
     JButton GNOME = new JButton("gnome sort");
+    JButton SELECTION = new JButton("selection sort");
 
     public SortingArray(){
         randomizeArrayPosition();
@@ -34,6 +38,7 @@ public class SortingArray extends JPanel implements ActionListener {
         createButton(BUBBLE, "bubble");
         createButton(COCKTAIL, "cocktail");
         createButton(GNOME, "gnome");
+        createButton(SELECTION, "selection");
 
     }
 
@@ -43,7 +48,7 @@ public class SortingArray extends JPanel implements ActionListener {
         this.setBackground(Color.black);
         for (int i = 0; i < array.length; i++) {
             g.setColor(Color.WHITE);
-            if (cocktail_boolean){
+            if (cocktailBoolean){
                 if (i==CocktailSort.currIndex){
                     g.setColor(Color.MAGENTA);
                 }
@@ -52,7 +57,7 @@ public class SortingArray extends JPanel implements ActionListener {
                 }
             }
 
-            if (bubble_boolean) {
+            if (bubbleBoolean) {
                 if (i == BubbleSort.currIndex && i != 0) {
                     g.setColor(Color.MAGENTA);
                 }
@@ -60,9 +65,24 @@ public class SortingArray extends JPanel implements ActionListener {
                     g.setColor(Color.green);
                 }
             }
-            if (gnome_boolean){
+            if (gnomeBoolean){
                 if (i==GnomeSort.currIndex){
                     g.setColor(Color.MAGENTA);
+                }
+
+            }
+            if (selectionBoolean){
+                if (i== SelectionSort.minNum){
+                    g.setColor(Color.MAGENTA);
+                }
+                if (i== SelectionSort.current_index){
+                    g.setColor(Color.BLUE);
+                }
+                if (i< SelectionSort.portion_sorted){
+                    g.setColor(Color.GREEN);
+                }
+                if (i== SelectionSort.portion_sorted){
+                    g.setColor(Color.ORANGE);
                 }
 
             }
@@ -79,11 +99,13 @@ public class SortingArray extends JPanel implements ActionListener {
         switch (choice){
             case "restart":
                 bubbleSort.reset();
-                bubble_boolean = false;
+                bubbleBoolean = false;
                 cocktailSort.reset();
-                cocktail_boolean = false;
+                cocktailBoolean = false;
                 gnomeSort.reset();
-                gnome_boolean = false;
+                gnomeBoolean = false;
+                selectionSort.reset();
+                selectionBoolean = false;
                 stop = true;
                 randomizeArrayPosition();
                 repaint();
@@ -96,6 +118,9 @@ public class SortingArray extends JPanel implements ActionListener {
                 break;
             case "gnome":
                 startSorting("gnome");
+                break;
+            case "selection":
+                startSorting("selection");
                 break;
 
         }
@@ -110,16 +135,20 @@ public class SortingArray extends JPanel implements ActionListener {
             } else {
                 switch (algorithm){
                     case "bubble":
-                        bubble_boolean = true;
+                        bubbleBoolean = true;
                         bubbleSort.sort(array);
                         break;
                     case "cocktail":
-                        cocktail_boolean = true;
+                        cocktailBoolean = true;
                         cocktailSort.sort(array);
                         break;
                     case "gnome":
-                        gnome_boolean = true;
+                        gnomeBoolean = true;
                         gnomeSort.sort(array);
+                        break;
+                    case "selection":
+                        selectionBoolean = true;
+                        selectionSort.sort(array);
                         break;
 
                 }
