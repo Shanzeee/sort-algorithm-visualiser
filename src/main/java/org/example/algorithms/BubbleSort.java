@@ -1,16 +1,15 @@
 package org.example.algorithms;
 
-import org.example.SortingArray;
-
-public class BubbleSort {
-    public static int currIndex = 0; // index
-    public static int portionSorted = 0; // portion of array that's been sorted
-    public static int swaps = 0; // number of swaps made
+public class BubbleSort implements SortAlgorithm{
+    public static int currIndex = 0;
+    public static int portionSorted = 0;
+    public static int swaps = 0;
 
     public BubbleSort() {
     }
 
-    // makes one swap at a time (if required) according to bubble Sort algorithm
+
+    @Override
     public void sort(int[] array) {
 
         if (currIndex >= array.length - 1 - portionSorted) {
@@ -26,19 +25,20 @@ public class BubbleSort {
         }
     }
 
-    // method that swaps two elements in array
+
+    @Override
     public void swap(int[] array, int x, int y){
-        this.swaps++;
+        swaps++;
         int temp = array[x];
         array[x] = array[y];
         array[y] = temp;
     }
 
-    // method that resets all default parameters in algorithm
+    @Override
     public void reset(){
-        this.currIndex = 0;
-        this.portionSorted = 0;
-        this.swaps = 0;
+        currIndex = 0;
+        portionSorted = 0;
+        swaps = 0;
     }
 
 }
