@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.algorithms.BubbleSort;
 import org.example.algorithms.CocktailSort;
+import org.example.algorithms.GnomeSort;
 
 import java.util.Random;
 import javax.swing.*;
@@ -15,13 +16,15 @@ public class SortingArray extends JPanel implements ActionListener {
     private final Random random = new Random();
     boolean bubble_boolean = false;
     boolean cocktail_boolean = false;
+    boolean gnome_boolean = false;
     BubbleSort bubbleSort = new BubbleSort();
     CocktailSort cocktailSort = new CocktailSort();
+    GnomeSort gnomeSort = new GnomeSort();
     JLabel label = new JLabel("0 swaps made  ");
     JButton RESTART = new JButton("restart array");
     JButton BUBBLE = new JButton("bubble sort");
-    JButton COUNTING = new JButton("counting sort");
     JButton COCKTAIL = new JButton("cocktail sort");
+    JButton GNOME = new JButton("gnome sort");
 
     public SortingArray(){
         randomizeArrayPosition();
@@ -30,6 +33,7 @@ public class SortingArray extends JPanel implements ActionListener {
         createButton(RESTART, "restart");
         createButton(BUBBLE, "bubble");
         createButton(COCKTAIL, "cocktail");
+        createButton(GNOME, "gnome");
 
     }
 
@@ -56,6 +60,12 @@ public class SortingArray extends JPanel implements ActionListener {
                     g.setColor(Color.green);
                 }
             }
+            if (gnome_boolean){
+                if (i==GnomeSort.currIndex){
+                    g.setColor(Color.MAGENTA);
+                }
+
+            }
             g.drawRect(i*(14), 700-array[i], 14, array[i]);
             g.fillRect(i*(14), 700-array[i], 14, array[i]);
         }
@@ -72,6 +82,8 @@ public class SortingArray extends JPanel implements ActionListener {
                 bubble_boolean = false;
                 cocktailSort.reset();
                 cocktail_boolean = false;
+                gnomeSort.reset();
+                gnome_boolean = false;
                 stop = true;
                 randomizeArrayPosition();
                 repaint();
@@ -81,6 +93,9 @@ public class SortingArray extends JPanel implements ActionListener {
                 break;
             case "cocktail":
                 startSorting("cocktail");
+                break;
+            case "gnome":
+                startSorting("gnome");
                 break;
 
         }
@@ -101,6 +116,10 @@ public class SortingArray extends JPanel implements ActionListener {
                     case "cocktail":
                         cocktail_boolean = true;
                         cocktailSort.sort(array);
+                        break;
+                    case "gnome":
+                        gnome_boolean = true;
+                        gnomeSort.sort(array);
                         break;
 
                 }
